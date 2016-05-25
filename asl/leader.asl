@@ -8,24 +8,30 @@
      .print("Defining quadrants for simulation ",S," : ",W,"x",H);
 
      CellH = H div 2;
-     +quad(S,1, 0,       0,       W div 2 - 1, CellH - 1);
-     +quad(S,2, W div 2, 0,       W - 1,       CellH - 1);
-     +quad(S,3, 0,       CellH,   W div 2 - 1, (CellH * 2)-1); 
-     +quad(S,4, W div 2, CellH,   W - 1,       (CellH * 2)-1);
+     CellW = W div 3;
+     +quad(S,1, 0,			0,			CellW - 1, 			CellH - 1);
+     +quad(S,2, CellW, 		0,			CellW*2 - 1,		CellH - 1);
+     +quad(S,3, CellW*2,	0,   		W - 1, 				CellH - 1); 
+     +quad(S,4, 0,			CellH,		CellW - 1, 			H - 1);
+     +quad(S,5, CellW, 		CellH,		CellW*2 - 1,		H - 1);
+     +quad(S,6, CellW*2,	CellH,  	W - 1, 				H - 1);
       
      !inform_quad(S,miner1,1);
      !inform_quad(S,miner2,2);
      !inform_quad(S,miner3,3);
-     !inform_quad(S,miner4,4).
+     !inform_quad(S,miner4,4);
+     !inform_quad(S,miner5,5);
+     !inform_quad(S,miner6,6).
      
      
 // only informs the quadrant if the depot is not in the quadrant
 +!inform_quad(S,Miner,Q)
-  :  quad(S,Q,X1,Y1,X2,Y2) &
-     depot(S,DX,DY) &
+  :  quad(S,Q,X1,Y1,X2,Y2) /*&
+     depot(S,DX,DY)  &
      not (DX >= X1 & DX <= X2 &
-          DY >= Y1 & DY <= Y2)
-  <- .send(Miner,tell,quadrant(X1,Y1,X2,Y2)).
+          DY >= Y1 & DY <= Y2)*/
+  <- .send(Miner,tell,quadrant(X1,Y1,X2,Y2));
+  	 .print("Miner ",Miner," is in quad: ",X1, " ",X2, " ",Y1, " ",Y2, ".").
 
 +!inform_quad(_,Miner,_)
   <- .print("Miner ",Miner," is in the depot quadrant.").
